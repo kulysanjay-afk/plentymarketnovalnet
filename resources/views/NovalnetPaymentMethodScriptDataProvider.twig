@@ -69,36 +69,43 @@ function iOS() {
 
 $(document).ready(function () {
 
+    let reloadDone = false;
     showApplePayButton();
-
-   ;
-
     const observer = new MutationObserver(function (mutations) {
 
         mutations.forEach(function (mutation) {
 
             var nnPaymentMethodKey = $('#nn_paymentmethod_key').val();
 
+            if (
+                !reloadDone &&
+                (
+                    nnPaymentMethodKey === 'NOVALNET_APPLEPAY' ||
+                    nnPaymentMethodKey === 'NOVALNET_GOOGLEPAY'
+                )
+            ) {
 
-         
+                // Billing section changed?
+                if ($(mutation.target).closest('.invoice-address-select').length ||
+                    $(mutation.target).find('.invoice-address-select').length) {
 
-     if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY' || nnPaymentMethodKey === 'NOVALNET_GOOGLEPAY' ) {
+                    reloadDone = true;
 
-     document.addEventListener('billingAddressChanged', function () {
+                    console.log('Billing address changed -> reload');
 
-            location.reload();
-        
-     })
-
-  if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY'){
-
-                if ($(mutation.target).find(
-                    'li[data-id="' + $('#nn_paymentmethod_id').val() + '"]'
-                ).length > 0) {
-
-                    showApplePayButton();
+                    location.reload();
                 }
             }
+
+            if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY') {
+
+                if (
+                    $(mutation.target).find(
+                        'li[data-id="' + $('#nn_paymentmethod_id').val() + '"]'
+                    ).length > 0
+                ) {
+                    showApplePayButton();
+                }
             }
 
         });
