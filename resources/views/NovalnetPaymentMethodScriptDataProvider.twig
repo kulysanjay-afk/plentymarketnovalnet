@@ -2,23 +2,39 @@
 <input type="hidden" name="nn_paymentmethod_key" id="nn_paymentmethod_key" value="{{nnPaymentMethodKey}}">
 <input type="hidden" name="nn_paymentmethod_id" id="nn_paymentmethod_id" value="{{nnPaymentMethodId}}">
 <script type="text/javascript">
-    jQuery(document).ready(function() {
-        {# Define variables #}
-        var nnPaymentMethodId = jQuery('#nn_paymentmethod_id').val();
-        var nnPaymentMethodKey = jQuery('#nn_paymentmethod_key').val();
 
-        {# Display the Novalnet ApplePay payment if it is IOS Device #}
-        if(nnPaymentMethodKey == 'NOVALNET_APPLEPAY') {
-           var iosDevicce = iOS();
-           var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-           if(iosDevicce && isSafari) {
-            jQuery('li[data-id="'+nnPaymentMethodId+'"]').show();
-           } else {
-            jQuery('li[data-id="'+nnPaymentMethodId+'"]').hide();
-           }
+window.hideApplePayButton = function () {
+
+    var nnPaymentMethodId = $('#nn_paymentmethod_id').val();
+
+    if (nnPaymentMethodId) {
+        $('li[data-id="' + nnPaymentMethodId + '"]').hide();
+    }
+};
+
+window.showCheckoutButton = function () {
+
+    $('.fa-arrow-right').parent('button').show();
+};
+
+window.showApplePayButton = function () {
+
+    var nnPaymentMethodId = $('#nn_paymentmethod_id').val();
+    var nnPaymentMethodKey = $('#nn_paymentmethod_key').val();
+
+    if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY') {
+
+        var iosDevice = iOS();
+        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+        if (iosDevice && isSafari) {
+            $('li[data-id="' + nnPaymentMethodId + '"]').show();
+        } else {
+            $('li[data-id="' + nnPaymentMethodId + '"]').hide();
         }
-
-        {# Call the Direct payment methods #}
+    }
+    
+    {# Call the Direct payment methods #}
         jQuery("#nn_direct_payment_process").click(function () {
             jQuery.get("/payment/novalnet/directPaymentProcess", function(data) {
                 window.location = data;
@@ -34,9 +50,11 @@
         {# Call the redirect payment methods #}
         jQuery('#nn_redirect_payment_process').click(function() {
             $("#redirectPayment").submit();
-        });
+        }); 
+    
+    
+};
 
-    });
 function iOS() {
     return [
       'iPad Simulator',
@@ -46,9 +64,40 @@ function iOS() {
       'iPhone',
       'iPod'
     ].includes(navigator.platform)
-    // iPad on iOS 13 detection
-    || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
 }
+
+$(document).ready(function () {
+
+    showApplePayButton();
+
+    const observer = new MutationObserver(function (mutations) {
+
+        mutations.forEach(function (mutation) {
+
+            var nnPaymentMethodKey = $('#nn_paymentmethod_key').val();
+
+            if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY') {
+
+                if ($(mutation.target).find(
+                    'li[data-id="' + $('#nn_paymentmethod_id').val() + '"]'
+                ).length > 0) {
+
+                    showApplePayButton();
+                }
+            }
+
+        });
+
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+});
+
 </script>
 
 <form id="redirectPayment" method="post" action="{{redirectUrl}}">
