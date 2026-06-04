@@ -70,13 +70,13 @@ function iOS() {
 $(document).ready(function () {
 
     showApplePayButton();
-
+      alert('sanjay');
     const observer = new MutationObserver(function (mutations) {
 
         mutations.forEach(function (mutation) {
 
             var nnPaymentMethodKey = $('#nn_paymentmethod_key').val();
-               console.log('sanjay);
+               
             if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY') {
 
                 if ($(mutation.target).find(
