@@ -96,26 +96,23 @@ jQuery(document).ready(function() {
                 jQuery('li[data-id="'+mopId+'"]').hide();
             }
 
-            jQuery('.method-list-item')
-            .off('click.novalnetGooglePay')
-            .on('click.novalnetGooglePay', function() {
-        
-                var clickedId = jQuery(this).attr('data-id');
-        
-                console.log('clickedId=', clickedId);
-                console.log('mopId=', mopId);
-        
-                if(clickedId !== undefined && clickedId != mopId) {
-        
-                    jQuery("#nn_google_pay").hide();
-                    jQuery('.fa-arrow-right').parent('button').show();
-        
-                } else {
-        
-                    jQuery("#nn_google_pay").show();
-                    jQuery('.fa-arrow-right').parent('button').hide();
-                }
-            });
+            jQuery(document)
+    .off('click.novalnetGooglePay', '.method-list-item')
+    .on('click.novalnetGooglePay', '.method-list-item', function() {
+
+        var clickedId = jQuery(this).attr('data-id');
+
+        if(clickedId !== undefined && clickedId != mopId) {
+
+            jQuery("#nn_google_pay").hide();
+            jQuery('.fa-arrow-right').parent('button').show();
+
+        } else {
+
+            jQuery("#nn_google_pay").show();
+            jQuery('.fa-arrow-right').parent('button').hide();
+        }
+    });
         });
     } catch (e) {
         // Handling the errors from the payment intent setup
