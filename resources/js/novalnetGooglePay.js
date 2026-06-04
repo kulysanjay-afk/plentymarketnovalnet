@@ -74,14 +74,10 @@ jQuery(document).ready(function() {
                     NovalnetWalletPaymentObj.addPaymentButton("#nn_google_pay");
                 } else {
                     jQuery('li[data-id="'+mopId+'"]').show();
-                    jQuery('li[data-id="'+mopId+'"]')
-                    .off('click.novalnetGooglePay')
-                    .on('click.novalnetGooglePay', function() {
-                
+                    jQuery('li[data-id="'+mopId+'"]').click(function() {
                         jQuery('#nn_google_pay').empty();
-                
+                        // Initiating the payment request for the wallet payment
                         NovalnetWalletPaymentObj.addPaymentButton("#nn_google_pay");
-                
                         jQuery('.fa-arrow-right').parent('button').hide();
                     });
                     if(jQuery('input[type="radio"][id*='+mopId+']').is(':checked')) {
@@ -96,23 +92,18 @@ jQuery(document).ready(function() {
                 jQuery('li[data-id="'+mopId+'"]').hide();
             }
 
-            jQuery(document)
-    .off('click.novalnetGooglePay', '.method-list-item')
-    .on('click.novalnetGooglePay', '.method-list-item', function() {
-
-        var clickedId = jQuery(this).attr('data-id');
-
-        if(clickedId !== undefined && clickedId != mopId) {
-
-            jQuery("#nn_google_pay").hide();
-            jQuery('.fa-arrow-right').parent('button').show();
-
-        } else {
-
-            jQuery("#nn_google_pay").show();
-            jQuery('.fa-arrow-right').parent('button').hide();
-        }
-    });
+            jQuery('.method-list-item').on('click',function() {
+                var clickedId = jQuery(this).attr('data-id');
+                if(clickedId !== undefined && clickedId != mopId) {
+                    jQuery("#nn_google_pay").hide();  
+                    jQuery('.fa-arrow-right').parent('button').show();
+               } else {
+                   setTimeout(function() {
+                    jQuery("#nn_google_pay").show();
+                    jQuery('.fa-arrow-right').parent('button').hide();
+                     }, 3000);
+               }
+            });
         });
     } catch (e) {
         // Handling the errors from the payment intent setup
