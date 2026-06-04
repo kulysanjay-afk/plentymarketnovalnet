@@ -71,12 +71,7 @@ $(document).ready(function () {
 
     showApplePayButton();
 
-    document.addEventListener('billingAddressChanged', function () {
-
-            console.log('billing updated');
-            location.reload();
-        
-    });
+   ;
 
     const observer = new MutationObserver(function (mutations) {
 
@@ -84,7 +79,18 @@ $(document).ready(function () {
 
             var nnPaymentMethodKey = $('#nn_paymentmethod_key').val();
 
-            if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY') {
+
+         
+
+     if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY' || nnPaymentMethodKey === 'NOVALNET_APPLEPAY' ) {
+
+     document.addEventListener('billingAddressChanged', function () {
+
+            location.reload();
+        
+     })
+
+  if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY'){
 
                 if ($(mutation.target).find(
                     'li[data-id="' + $('#nn_paymentmethod_id').val() + '"]'
@@ -92,6 +98,7 @@ $(document).ready(function () {
 
                     showApplePayButton();
                 }
+            }
             }
 
         });
