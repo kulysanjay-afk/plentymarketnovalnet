@@ -74,10 +74,14 @@ jQuery(document).ready(function() {
                     NovalnetWalletPaymentObj.addPaymentButton("#nn_google_pay");
                 } else {
                     jQuery('li[data-id="'+mopId+'"]').show();
-                    jQuery('li[data-id="'+mopId+'"]').click(function() {
+                    jQuery('li[data-id="'+mopId+'"]')
+                    .off('click.novalnetGooglePay')
+                    .on('click.novalnetGooglePay', function() {
+                
                         jQuery('#nn_google_pay').empty();
-                        // Initiating the payment request for the wallet payment
+                
                         NovalnetWalletPaymentObj.addPaymentButton("#nn_google_pay");
+                
                         jQuery('.fa-arrow-right').parent('button').hide();
                     });
                     if(jQuery('input[type="radio"][id*='+mopId+']').is(':checked')) {
@@ -92,17 +96,25 @@ jQuery(document).ready(function() {
                 jQuery('li[data-id="'+mopId+'"]').hide();
             }
 
-            jQuery('.method-list-item').on('click',function() {
+            jQuery('.method-list-item')
+            .off('click.novalnetGooglePay')
+            .on('click.novalnetGooglePay', function() {
+        
                 var clickedId = jQuery(this).attr('data-id');
+        
+                console.log('clickedId=', clickedId);
+                console.log('mopId=', mopId);
+        
                 if(clickedId !== undefined && clickedId != mopId) {
-                    jQuery("#nn_google_pay").hide();  
+        
+                    jQuery("#nn_google_pay").hide();
                     jQuery('.fa-arrow-right').parent('button').show();
-               } else {
-                   setTimeout(function() {
+        
+                } else {
+        
                     jQuery("#nn_google_pay").show();
                     jQuery('.fa-arrow-right').parent('button').hide();
-                     }, 1000);
-               }
+                }
             });
         });
     } catch (e) {
