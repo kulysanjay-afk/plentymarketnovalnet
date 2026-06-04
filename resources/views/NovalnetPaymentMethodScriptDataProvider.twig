@@ -68,14 +68,24 @@ function iOS() {
 }
 
 $(document).ready(function () {
-  alert('loaded');
+  
     showApplePayButton();
-      alert('sanjay');
+     
     const observer = new MutationObserver(function (mutations) {
 
         mutations.forEach(function (mutation) {
 
             var nnPaymentMethodKey = $('#nn_paymentmethod_key').val();
+
+              document.addEventListener('billingAddressChanged', function () {
+
+        var nnPaymentMethodKey = $('#nn_paymentmethod_key').val();
+
+        if (nnPaymentMethodKey === 'NOVALNET_GOOGLEPAY') {
+            console.log('loaded');
+            location.reload();
+        }
+    });
                
             if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY') {
 
