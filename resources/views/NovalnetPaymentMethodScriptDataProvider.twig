@@ -86,14 +86,13 @@ $(document).ready(function () {
 
      document.addEventListener('billingAddressChanged', function () {
 
-          
-    console.log('billingAddressChanged fired');
-    console.log(ceresStore.state.address.billingAddress);
-
-        
-     })
-
-
+    const billingAddress = ceresStore.state.address.billingAddress;
+    if (!billingAddress) {
+        return;
+    }
+    console.log('Billing Address Updated');
+    location.reload();
+});
 
   if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY'){
 
