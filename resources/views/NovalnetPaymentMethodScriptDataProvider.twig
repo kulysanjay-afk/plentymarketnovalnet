@@ -85,16 +85,8 @@ $(document).ready(function () {
                 )
             ) {
 
-                // Billing section changed?
-                if ($(mutation.target).closest('.invoice-address-select').length ||
-                    $(mutation.target).find('.invoice-address-select').length) {
-
-                    reloadDone = true;
-
-                    console.log('Billing address changed -> reload');
-
-                    location.reload();
-                }
+              
+                  console.log(mutation.target);
             }
 
             if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY') {
