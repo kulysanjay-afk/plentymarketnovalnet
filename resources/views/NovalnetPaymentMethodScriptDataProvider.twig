@@ -70,9 +70,6 @@ function iOS() {
 $(document).ready(function () {
 
     showApplePayButton();
-
-   ;
-
     const observer = new MutationObserver(function (mutations) {
 
         mutations.forEach(function (mutation) {
@@ -83,10 +80,10 @@ document.addEventListener('billingAddressChanged', function () {
 
     const billingAddress = ceresStore.state.address.billingAddress;
     if (!billingAddress) {
-        return;
+       window.renderGooglePayButton();
     }
     location.reload();
-});
+    });
 
      if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY') {
 
