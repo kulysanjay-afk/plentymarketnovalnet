@@ -101,7 +101,7 @@ jQuery(document).ready(function() {
                    setTimeout(function() {
                     jQuery("#nn_google_pay").show();
                     jQuery('.fa-arrow-right').parent('button').hide();
-                     }, 3000);
+                     }, 2000);
                }
             });
         });
