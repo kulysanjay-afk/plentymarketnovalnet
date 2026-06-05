@@ -79,20 +79,22 @@ $(document).ready(function () {
 document.addEventListener('billingAddressChanged', function () {
 
     const billingAddress = ceresStore.state.address.billingAddress;
-    if (!billingAddress) {
-        
-       jQuery('.method-list-item').on('click',function() {
-                var clickedId = jQuery(this).attr('data-id');
-                if(clickedId !== undefined && clickedId != mopId) {
-                    jQuery("#nn_google_pay").hide();  
-                    jQuery('.fa-arrow-right').parent('button').show();
-               } else {
-                   setTimeout(function() {
+     if (!billingAddress) {
+
+        jQuery('.method-list-item').on('click.googlePayToggle', function () {
+
+            var clickedId = jQuery(this).attr('data-id');
+
+            if (typeof mopId !== "undefined" && clickedId !== mopId) {
+                jQuery("#nn_google_pay").hide();
+                jQuery('.fa-arrow-right').parent('button').show();
+            } else {
+                setTimeout(function () {
                     jQuery("#nn_google_pay").show();
                     jQuery('.fa-arrow-right').parent('button').hide();
-                     }, 2000);
-               }
-            });
+                }, 2000);
+            }
+        });
     }
     location.reload();
     });
