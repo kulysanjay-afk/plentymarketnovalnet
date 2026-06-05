@@ -70,6 +70,9 @@ function iOS() {
 $(document).ready(function () {
 
     showApplePayButton();
+
+   ;
+
     const observer = new MutationObserver(function (mutations) {
 
         mutations.forEach(function (mutation) {
@@ -82,8 +85,11 @@ document.addEventListener('billingAddressChanged', function () {
     if (!billingAddress) {
         return;
     }
+
     location.reload();
-    });
+});
+
+         
 
      if (nnPaymentMethodKey === 'NOVALNET_APPLEPAY') {
 
