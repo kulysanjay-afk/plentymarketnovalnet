@@ -82,6 +82,7 @@ document.addEventListener('billingAddressChanged', function () {
     if (!billingAddress) {
       console.log("Billing is NULL");
     console.log("Google Pay visible:", jQuery("#nn_google_pay").is(":visible"));
+    return;
     }
     location.reload();
     });
