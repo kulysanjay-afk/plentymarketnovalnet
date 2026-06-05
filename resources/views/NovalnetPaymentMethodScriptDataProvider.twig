@@ -79,9 +79,8 @@ $(document).ready(function () {
 document.addEventListener('billingAddressChanged', function () {
 
     const billingAddress = ceresStore.state.address.billingAddress;
-     if (!billingAddress) {
-   togglePaymentButtons(true);
-       
+    if (!billingAddress) {
+        return;
     }
     location.reload();
     });
@@ -106,16 +105,6 @@ document.addEventListener('billingAddressChanged', function () {
     });
 
 });
-
-function togglePaymentButtons(showGooglePay) {
-    if (showGooglePay) {
-        jQuery("#nn_google_pay").show();
-        jQuery('.fa-arrow-right').parent('button').hide();
-    } else {
-        jQuery("#nn_google_pay").hide();
-        jQuery('.fa-arrow-right').parent('button').show();
-    }
-}
 
 </script>
 
