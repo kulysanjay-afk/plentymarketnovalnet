@@ -15,6 +15,7 @@ use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFact
 use Novalnet\Helper\PaymentHelper;
 use Novalnet\Services\SettingsService;
 use Plenty\Modules\Helper\Services\WebstoreHelper;
+use Plenty\Plugin\Log\Loggable;
 
 /**
  * Class NovalnetPaymentMethodReinitializePaymentDataProvider
@@ -23,6 +24,8 @@ use Plenty\Modules\Helper\Services\WebstoreHelper;
  */
 class NovalnetPaymentMethodReinitializePaymentDataProvider
 {
+
+    use Loggable;
     /**
      * Display the reinitiate payment button
      *
@@ -69,8 +72,15 @@ class NovalnetPaymentMethodReinitializePaymentDataProvider
 
                 // Get order currency
                 foreach($order['amounts'] as $orderAmount) {
-                    $sessionStorage->getPlugin()->setValue('orderCurrency', 'EUR');
+                    $sessionStorage->getPlugin()->setValue('orderCurrency',  $order['amounts'][0]['currency']);
                 }
+
+                $this->getLogger(__METHOD__)->error('getcurrencyPayment', [
+                    '$path' => $order['amounts'],
+                                                   
+                ]);
+
+
                 // Set the required values into session
                 $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
                 $sessionStorage->getPlugin()->setValue('nnOrderCreator', $order['ownerId']);
