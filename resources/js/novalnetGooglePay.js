@@ -108,7 +108,9 @@ jQuery(document).ready(function() {
                         if (jQuery("#nn_google_pay").length) {
                            console.log('sssss');
                             jQuery("#nn_google_pay").show();
-                            jQuery('.fa-arrow-right').parent('button').hide();
+                            jQuery('.fa-arrow-right')
+    .parent('button')
+    .css('display', 'none');
             
                             observer.disconnect(); // observer stop
                         }
