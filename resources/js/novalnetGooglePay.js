@@ -97,7 +97,7 @@ jQuery(document).ready(function() {
                 var clickedId = jQuery(this).attr('data-id');
             
                 if (clickedId !== undefined && clickedId != mopId) {
-            
+                    console.log('nnnn');
                     jQuery("#nn_google_pay").hide();
                     jQuery('.fa-arrow-right').parent('button').show();
             
@@ -106,7 +106,7 @@ jQuery(document).ready(function() {
                     const observer = new MutationObserver(function() {
             
                         if (jQuery("#nn_google_pay").length) {
-            
+                           console.log('sssss');
                             jQuery("#nn_google_pay").show();
                             jQuery('.fa-arrow-right').parent('button').hide();
             
