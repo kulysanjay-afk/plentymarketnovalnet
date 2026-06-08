@@ -92,17 +92,34 @@ jQuery(document).ready(function() {
                 jQuery('li[data-id="'+mopId+'"]').hide();
             }
 
-            jQuery('.method-list-item').on('click',function() {
+            jQuery('.method-list-item').on('click', function() {
+
                 var clickedId = jQuery(this).attr('data-id');
-                if(clickedId !== undefined && clickedId != mopId) {
-                    jQuery("#nn_google_pay").hide();  
+            
+                if (clickedId !== undefined && clickedId != mopId) {
+            
+                    jQuery("#nn_google_pay").hide();
                     jQuery('.fa-arrow-right').parent('button').show();
-               } else {
-                   setTimeout(function() {
-                    jQuery("#nn_google_pay").show();
-                    jQuery('.fa-arrow-right').parent('button').hide();
-                     }, 2000);
-               }
+            
+                } else {
+            
+                    const observer = new MutationObserver(function() {
+            
+                        if (jQuery("#nn_google_pay").length) {
+            
+                            jQuery("#nn_google_pay").show();
+                            jQuery('.fa-arrow-right').parent('button').hide();
+            
+                            observer.disconnect(); // observer stop
+                        }
+            
+                    });
+            
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                }
             });
         });
     } catch (e) {

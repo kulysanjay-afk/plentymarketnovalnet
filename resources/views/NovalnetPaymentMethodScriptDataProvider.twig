@@ -83,8 +83,7 @@ document.addEventListener('billingAddressChanged', function () {
 
     const billingAddress = ceresStore.state.address.billingAddress;
     if (!billingAddress) {
-        console.log("Billing is NULL");
-      console.log("Google Pay visible:", jQuery("#nn_google_pay").is(":visible"));
+
       Googlepaybutton = jQuery("#nn_google_pay").is(":visible")
       if(Googlepaybutton){
 
