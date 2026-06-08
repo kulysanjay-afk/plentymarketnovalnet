@@ -69,7 +69,7 @@ class NovalnetPaymentMethodReinitializePaymentDataProvider
 
                 // Get order currency
                 foreach($order['amounts'] as $orderAmount) {
-                    $sessionStorage->getPlugin()->setValue('orderCurrency',  $order['amounts'][0]['currency']);
+                    $sessionStorage->getPlugin()->setValue('orderCurrency', 'EUR');
                 }
                 // Set the required values into session
                 $sessionStorage->getPlugin()->setValue('nnOrderNo', $order['id']);
