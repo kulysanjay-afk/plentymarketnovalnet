@@ -74,7 +74,7 @@ class NovalnetPaymentMethodReinitializePaymentDataProvider
                     $sessionStorage->getPlugin()->setValue('orderCurrency',  $order['amounts'][0]['currency']);
         
                 $this->getLogger(__METHOD__)->error('getcurrencyPayment', [
-                    '$path' =>  $order['amounts'][0]['currency'],
+                    '$path' => $order['amounts'],
                                                    
                 ]);
 
