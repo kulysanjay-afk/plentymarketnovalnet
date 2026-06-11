@@ -7,14 +7,9 @@ window.hideApplePayButton = function () {
 
     var nnPaymentMethodId = $('#nn_paymentmethod_id').val();
 
-        var iosDevice = iOS();
-        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-        if (iosDevice && isSafari) {
-            $('li[data-id="' + nnPaymentMethodId + '"]').show();
-        } else {
-            $('li[data-id="' + nnPaymentMethodId + '"]').hide();
-        }
+    if (nnPaymentMethodId) {
+        $('li[data-id="' + nnPaymentMethodId + '"]').hide();
+    }
 };
 
 window.showCheckoutButton = function () {
