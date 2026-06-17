@@ -226,7 +226,7 @@ class WebhookController extends Controller
     public function validateIpAddress()
     {
        
-        $novalnet_host_ip = dns_get_record($this->novalnet_host_name , DNS_A);
+        $novalnet_host_ip = gethostbynamel($this->novalnet_host_name);
         $clientIp = $this->paymentHelper->getRemoteIpAddress($novalnet_host_ip);
         $this->getLogger(__METHOD__)->error('Webhook Header Debug', [
             'HTTP_X_FORWARDED_HOST' => $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '',
