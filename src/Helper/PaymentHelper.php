@@ -307,8 +307,8 @@ class PaymentHelper
      *
      * @return string
      */
-	function getRemoteIpAddress($novalnetHostIP)
-    {
+	function getRemoteIpAddress(array $allowedIps)
+{
     $ip_keys = [
         'HTTP_X_FORWARDED_HOST',
         'HTTP_X_FORWARDED_FOR',
@@ -328,19 +328,20 @@ class PaymentHelper
         if (empty($_SERVER[$key])) {
             continue;
         }
+
         $ips = array_map('trim', explode(',', $_SERVER[$key]));
 
         foreach ($ips as $ip) {
 
-            if ($ip === $novalnetHostIP) {
-                return $novalnetHostIP;
+            if (in_array($ip, $allowedIps, true)) {
+                return $ip; 
             }
 
             $invalidIp = $ip;
         }
     }
 
-    return $invalidIp;
+    return $invalidIp; 
 }
 	
     /**
