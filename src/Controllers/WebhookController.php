@@ -56,10 +56,10 @@ class WebhookController extends Controller
     private $paymentService;
 
     /**
-     * @var ipAllowed
+     * @var novalnet_host_name
      * @IP-ADDRESS Novalnet IP, is a fixed value, DO NOT CHANGE!!!!!
      */
-    protected $ipAllowed = ['213.95.190.5', '213.95.190.7'];
+    protected $novalnet_host_name = 'pay-nn.de';
 
     /**
      * @var SettingsService
@@ -225,17 +225,14 @@ class WebhookController extends Controller
      */
     public function validateIpAddress()
     {
-        $this->getLogger(__METHOD__)->error('Webhook', [
-            'HTTP_X' => $_SERVER,
-        
-        ]);
-
-        $clientIp = $this->paymentHelper->getRemoteIpAddress($this->ipAllowed);
-        
+        if (! empty($this->novalnet_host_name)) {
+        $novalnet_host_ip = gethostbyname($this->novalnet_host_name);
+        $clientIp = $this->paymentHelper->getRemoteIpAddress($novalnet_host_ip);
         // Condition to check whether the webhook is called from authorized IP
-        if(!in_array($clientIp, $this->ipAllowed) && $this->settingsService->getPaymentSettingsValue('novalnet_webhook_testmode') != true) {
+        if( $clientIp !== $novalnet_host_ip && $this->settingsService->getPaymentSettingsValue('novalnet_webhook_testmode') != true) {
             return $this->renderTemplate('Unauthorised access from the IP ' . $clientIp);
         }
+    }
     }
 
     /**
