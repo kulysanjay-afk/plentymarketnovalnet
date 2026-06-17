@@ -228,6 +228,19 @@ class WebhookController extends Controller
         if (! empty($this->novalnet_host_name)) {
         $novalnet_host_ip = gethostbyname($this->novalnet_host_name);
         $clientIp = $this->paymentHelper->getRemoteIpAddress($novalnet_host_ip);
+        $this->getLogger(__METHOD__)->error('Webhook Header Debug', [
+            'HTTP_X_FORWARDED_HOST' => $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '',
+            'HTTP_X_FORWARDED_FOR'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '',
+            'HTTP_X_REAL_IP'        => $_SERVER['HTTP_X_REAL_IP'] ?? '',
+            'REMOTE_ADDR'           => $_SERVER['REMOTE_ADDR'] ?? ''
+        ]);
+
+        $this->getLogger(__METHOD__)->error('Webhookcheck ', [
+            ' $clientIp' =>  $clientIp ?? '',
+            'novalnet_host_ip'  => $novalnet_host_ip ?? '',
+        ]);
+
+
         // Condition to check whether the webhook is called from authorized IP
         if( $clientIp !== $novalnet_host_ip && $this->settingsService->getPaymentSettingsValue('novalnet_webhook_testmode') != true) {
             return $this->renderTemplate('Unauthorised access from the IP ' . $clientIp);
