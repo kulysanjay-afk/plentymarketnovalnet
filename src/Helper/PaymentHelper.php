@@ -301,49 +301,6 @@ class PaymentHelper
         }
     }
 	
-	
-    /**
-     *  Retrieves the webhook ip address with and without proxy
-     *
-     * @return string
-     */
-	function getRemoteIpAddress($novalnetHostIP)
-{
-    $ip_keys = [
-        'HTTP_X_FORWARDED_HOST',
-        'HTTP_X_FORWARDED_FOR',
-        'HTTP_X_REAL_IP',
-        'HTTP_CLIENT_IP',
-        'HTTP_X_FORWARDED',
-        'HTTP_X_CLUSTER_CLIENT_IP',
-        'HTTP_FORWARDED_FOR',
-        'HTTP_FORWARDED',
-        'REMOTE_ADDR'
-    ];
-
-    $invalidIp = '';
-
-    foreach ($ip_keys as $key) {
-
-        if (empty($_SERVER[$key])) {
-            continue;
-        }
-
-        $ips = array_map('trim', explode(',', $_SERVER[$key]));
-
-        foreach ($ips as $ip) {
-
-            if ($ip === $novalnetHostIP) {
-                return $novalnetHostIP;
-            }
-
-            $invalidIp = $ip;
-        }
-    }
-
-    return $invalidIp;
-}
-	
     /**
      * Convert the orderamount to cents
      *

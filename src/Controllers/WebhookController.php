@@ -56,12 +56,6 @@ class WebhookController extends Controller
     private $paymentService;
 
     /**
-     * @var novalnet_host_name
-     * @IP-ADDRESS Novalnet IP, is a fixed value, DO NOT CHANGE!!!!!
-     */
-    protected $novalnet_host_name = 'pay-nn.de';
-
-    /**
      * @var SettingsService
     */
     private $settingsService;
@@ -148,11 +142,6 @@ class WebhookController extends Controller
         if ( !empty( $this->eventData ['custom'] ['shop_invoked'] ) ) {
           return  $this->renderTemplate( 'Process already handled in the shop.' );
         }
-        // validated the IP Address
-        $invalidIpMsg =  $this->validateIpAddress();
-        if(!empty($invalidIpMsg)) {
-           return $invalidIpMsg;
-        }
         // Validates the webhook params before processing
         $mandateEventParamMsg = $this->validateEventParams();
         if(!empty($mandateEventParamMsg)) {
@@ -223,31 +212,7 @@ class WebhookController extends Controller
      *
      * @return bool|string
      */
-    public function validateIpAddress()
-    {
-       
-        $novalnet_host_ip = gethostbynamel($this->novalnet_host_name);
-        $clientIp = $this->paymentHelper->getRemoteIpAddress($novalnet_host_ip);
-        $this->getLogger(__METHOD__)->error('Webhook Header Debug', [
-            'HTTP_X_FORWARDED_HOST' => $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '',
-            'HTTP_X_FORWARDED_FOR'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '',
-            'HTTP_X_REAL_IP'        => $_SERVER['HTTP_X_REAL_IP'] ?? '',
-            'REMOTE_ADDR'           => $_SERVER['REMOTE_ADDR'] ?? ''
-        ]);
-
-        $this->getLogger(__METHOD__)->error('Webhook', [
-            ' $clientIp' =>  $clientIp ?? '',
-            'novalnet_host_ip'  => $novalnet_host_ip ?? '',
-        ]);
-
-
-        // Condition to check whether the webhook is called from authorized IP
-        if( $clientIp !== $novalnet_host_ip && $this->settingsService->getPaymentSettingsValue('novalnet_webhook_testmode') != true) {
-            return $this->renderTemplate('Unauthorised access from the IP ' . $clientIp);
-        }
     
-    }
-
     /**
      * Validates the event parameters
      *
