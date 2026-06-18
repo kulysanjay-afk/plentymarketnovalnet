@@ -56,6 +56,12 @@ class WebhookController extends Controller
     private $paymentService;
 
     /**
+     * @var $ipAllowed
+     * @IP-ADDRESS Novalnet IP, is a fixed value, DO NOT CHANGE!!!!!
+     */
+    protected $ipAllowed = ['213.95.190.5', '213.95.190.7'];
+
+    /**
      * @var SettingsService
     */
     private $settingsService;
@@ -142,6 +148,11 @@ class WebhookController extends Controller
         if ( !empty( $this->eventData ['custom'] ['shop_invoked'] ) ) {
           return  $this->renderTemplate( 'Process already handled in the shop.' );
         }
+        // validated the IP Address
+        $invalidIpMsg =  $this->validateIpAddress();
+        if(!empty($invalidIpMsg)) {
+           return $invalidIpMsg;
+        }
         // Validates the webhook params before processing
         $mandateEventParamMsg = $this->validateEventParams();
         if(!empty($mandateEventParamMsg)) {
@@ -212,7 +223,15 @@ class WebhookController extends Controller
      *
      * @return bool|string
      */
-    
+    public function validateIpAddress()
+    {
+        $clientIp = $this->paymentHelper->getRemoteIpAddress($this->ipAllowed);
+        // Condition to check whether the webhook is called from authorized IP
+        if(!in_array($clientIp, $this->ipAllowed) && $this->settingsService->getPaymentSettingsValue('novalnet_webhook_testmode') != true) {
+            return $this->renderTemplate('Unauthorised access from the IP ' . $clientIp);
+        }
+    }
+
     /**
      * Validates the event parameters
      *
